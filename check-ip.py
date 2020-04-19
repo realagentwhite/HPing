@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+"""
+HPing
+Written by: Andrew (aka AgentWhite)
+Twitter: @_agentwhite_
+Website: https://thegibson.xyz
+"""
+
+version = "0.2.7"
+
 import os, sys
 from time import sleep
 import subprocess
@@ -10,84 +20,100 @@ class bcolors:
 	BOLD = '\033[1m'
 	ENDC = '\033[0m'
 
-
-
 def banner():
-	pipinger = '''
- 888888ba  oo  888888ba  oo                                     
- 88    `8b     88    `8b                                        
-a88aaaa8P' dP a88aaaa8P' dP 88d888b. .d8888b. .d8888b. 88d888b. 
- 88        88  88        88 88'  `88 88'  `88 88ooood8 88'  `88 
- 88        88  88        88 88    88 88.  .88 88.  ... 88       
- dP        dP  dP        dP dP    dP `8888P88 `88888P' dP       
-oooooooooooooooooooooooooooooooooooooo~~~~.88~oooooooooooooooooo
-                                      d8888P                    
+	banner = '''
+ooooo ooooo oooooooooo  o88                           
+ 888   888   888    888 oooo  oo oooooo     oooooooo8 
+ 888ooo888   888oooo88   888   888   888  888    88o  
+ 888   888   888         888   888   888   888oo888o  
+o888o o888o o888o       o888o o888o o888o 888     888 
+                                           888ooo888                 
 	'''
-	return pipinger
+	banner += bcolors.BOLD + bcolors.RED + 'Version %s' % str(version)
+	banner += '''
+	HPing
+	Written by: Andrew (aka AgentWhite)
+	Twitter: @_agentwhite_
+	Website: https://thegibson.xyz\n''' + bcolors.ENDC
+	return banner
 
-def check(address, get_alerts):
+def check(address, get_alerts, count, repeat):
 	try:
 		with open(os.devnull, "wb") as limbo:
 			ip=address
 			result=subprocess.Popen(["ping", "-c", "1", "-n", "-W", "2", ip],
 			stdout=limbo, stderr=limbo).wait()
 			if result != 0:
-				print(ip + bcolors.RED + bcolors.BOLD + " is not active"+ bcolors.ENDC)
+				print("[" + bcolors.BOLD + bcolors.GREEN + str(count) + bcolors.ENDC + "/" + bcolors.BOLD + bcolors.GREEN + str(repeat) + bcolors.ENDC + "] " + bcolors.YELLOW + ip + bcolors.ENDC +bcolors.RED + bcolors.BOLD + " is not active"+ bcolors.ENDC)
 			if result == 0 and get_alerts == True:
-				print(ip + bcolors.GREEN + bcolors.BOLD + " is active"+ bcolors.ENDC)
+				print("[" + bcolors.BOLD + bcolors.GREEN + str(count) + bcolors.ENDC + "/" + bcolors.BOLD + bcolors.GREEN + str(repeat) + bcolors.ENDC + "] " + bcolors.YELLOW + ip + bcolors.ENDC +bcolors.GREEN + bcolors.BOLD + " is active"+ bcolors.ENDC)
 	except Exception as error:
 		print("An error ocurred: ")
 		print(error)
 		input("Press enter to continue...")
 		main()
 
+def run_hping(address, get_alerts, repeat, rest):
+	try:
+		# Declare variables
+		count = 0
+		x = 0
+		if get_alerts == False:
+			print("\nYou will not see any results until the host or IP entered stops responding.")
+
+		for i in range(0,repeat+1):
+			x += 1
+			count = x
+			if x == repeat+1:
+				print("Done checking.\nRun the script again to check another host/ip")
+			else:
+				check(address, get_alerts, count, repeat)
+				sleep(rest)
+	except KeyboardInterrupt:
+		print("Caught ctrl+c\nExiting now...")
+		sys.exit()
+	except Exception as error:
+		print("*"*20)
+		print(error)
+		print("*"*20)
+		input("Press enter to continue...")
+		main()
+
+
 def main():
 	try:
 		os.system("clear")
+		# Clear variables for when executing script again after exceptions
+		address = ""
+		rest = 0
+		repeat = 0
+		alerts = False
 		print(bcolors.YELLOW + bcolors.BOLD + banner() + bcolors.ENDC)
 		address = input("Enter the IP/host you want to check: ")
-		rest = int(input("How long do you want to wait until the next check? (between 0 and 60) "))
+		rest = input("How long do you want to wait until the next check? (default 4) ")
+		rest = int(rest)
 		if rest < 0 or rest > 60:
-			print("Enter a number between 0 and 60")
-			sys.exit()
+			print("Using default 4")
+			rest = 4
 
-		repeat = int(input("How many times would you like to check? (greater than 4, default is 200) "))
-		x = 0
-		
+		repeat = input("How many times would you like to check? (greater than 4, default is 200) ")
+		repeat = int(repeat)
 		alerts = input("Would you like to get alert if the host/IP is responding to pings? (Y/n) ").lower()
+
 		if alerts == 'y':
 			get_alerts = True
 		else:
 			get_alerts = False
 		
 		if repeat < 4:
-			print("You entered %s which is not a valid input" % str(repeat))
-			print("Try again and use a number between 4 and 1000")
-			sys.exit()
-		elif repeat >= 4 and repeat <= 1000:
-			if get_alerts == False:
-				print("\nYou will not see any results until the host or IP entered stops responding.")
-
-			for i in range(0,repeat+1):
-				x += 1
-				if x == repeat+1:
-					print("Done checking.\nRun the script again to check another host/ip")
-				else:
-					check(address, get_alerts)
-					sleep(rest)
-		else:
+			print("Using default 200 as you entered a number lower than 4")
 			repeat = 200
-			x = 0
-			if get_alerts == False:
-				print("\nYou will not see any results until the host or IP entered stops responding.")
+			run_hping(address, get_alerts, repeat, rest)
+		elif repeat >= 4:
+			run_hping(address, get_alerts, repeat, rest)
+		else:
+			run_hping(address, get_alerts, repeat, rest)
 
-			for i in range(0,repeat+1):
-				x += 1
-				if x == repeat:
-					print("Done checking.\nRun the script again to check another host/ip")
-				else:
-					check(address, get_alerts)
-					sleep(rest)
 
 	except KeyboardInterrupt:
 		print("Caught ctrl+c\nExiting now...")
@@ -97,4 +123,7 @@ def main():
 		print(error)
 		print("*"*20)
 
-main()
+if __name__ == "__main__":
+	main()
+else:
+	sys.exit()
