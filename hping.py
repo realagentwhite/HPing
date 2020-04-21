@@ -44,9 +44,13 @@ def check(address, get_alerts, count, repeat):
 			result=subprocess.Popen(["ping", "-c", "1", "-n", "-W", "2", ip],
 			stdout=limbo, stderr=limbo).wait()
 			if result != 0:
-				print("[" + bcolors.BOLD + bcolors.GREEN + str(count) + bcolors.ENDC + "/" + bcolors.BOLD + bcolors.GREEN + str(repeat) + bcolors.ENDC + "] " + bcolors.YELLOW + ip + bcolors.ENDC +bcolors.RED + bcolors.BOLD + " is not active"+ bcolors.ENDC)
+				print("[" + bcolors.BOLD + bcolors.GREEN + str(count) + bcolors.ENDC + "/" + \
+					bcolors.BOLD + bcolors.GREEN + str(repeat) + bcolors.ENDC + "] " + \
+					bcolors.YELLOW + ip + bcolors.ENDC +bcolors.RED + bcolors.BOLD + " is not active"+ bcolors.ENDC)
 			if result == 0 and get_alerts == True:
-				print("[" + bcolors.BOLD + bcolors.GREEN + str(count) + bcolors.ENDC + "/" + bcolors.BOLD + bcolors.GREEN + str(repeat) + bcolors.ENDC + "] " + bcolors.YELLOW + ip + bcolors.ENDC +bcolors.GREEN + bcolors.BOLD + " is active"+ bcolors.ENDC)
+				print("[" + bcolors.BOLD + bcolors.GREEN + str(count) + bcolors.ENDC + "/" + \
+				bcolors.BOLD + bcolors.GREEN + str(repeat) + bcolors.ENDC + "] " + bcolors.YELLOW \
+				+ ip + bcolors.ENDC +bcolors.GREEN + bcolors.BOLD + " is active"+ bcolors.ENDC)
 	except Exception as error:
 		print("An error ocurred: ")
 		print(error)
@@ -64,8 +68,9 @@ def run_hping(address, get_alerts, repeat, rest):
 		for i in range(0,repeat+1):
 			x += 1
 			count = x
-			if x == repeat+1:
+			if count == repeat+1:
 				print("Done checking.\nRun the script again to check another host/ip")
+				sys.exit()
 			else:
 				check(address, get_alerts, count, repeat)
 				sleep(rest)
