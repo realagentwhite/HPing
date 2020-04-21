@@ -6,7 +6,7 @@ Twitter: @_agentwhite_
 Website: https://thegibson.xyz
 """
 
-version = "0.2.7"
+version = "0.1.3"
 
 import os, sys
 from time import sleep
@@ -96,13 +96,21 @@ def main():
 		print(bcolors.YELLOW + bcolors.BOLD + banner() + bcolors.ENDC)
 		address = input("Enter the IP/host you want to check: ")
 		rest = input("How long do you want to wait until the next check? (default 4) ")
-		rest = int(rest)
-		if rest < 0 or rest > 60:
-			print("Using default 4")
+		if rest < '0' or rest > '60':
+			print("Using default timeout as 4")
 			rest = 4
-
-		repeat = input("How many times would you like to check? (greater than 4, default is 200) ")
-		repeat = int(repeat)
+		elif len(rest) <= 0:
+			print("Using default timeout as 4")
+			rest = 4
+		
+		repeat = input("How many times would you like to check? (greater than 4, default is 60) ")
+		if repeat < '0':
+			print("Using default to check every 60 seconds")
+			repeat = 60
+		elif len(repeat) == 0:
+			print("Using default to check every 60 seconds")
+			repeat = 60
+			
 		alerts = input("Would you like to get alert if the host/IP is responding to pings? (Y/n) ").lower()
 
 		if alerts == 'y':
@@ -110,14 +118,10 @@ def main():
 		else:
 			get_alerts = False
 		
-		if repeat < 4:
-			print("Using default 200 as you entered a number lower than 4")
-			repeat = 200
-			run_hping(address, get_alerts, repeat, rest)
-		elif repeat >= 4:
-			run_hping(address, get_alerts, repeat, rest)
-		else:
-			run_hping(address, get_alerts, repeat, rest)
+		repeat = int(repeat)
+		rest = int(rest)
+		
+		run_hping(address, get_alerts, repeat, rest)
 
 
 	except KeyboardInterrupt:
