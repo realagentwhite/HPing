@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """
 HPing
 Written by: Andrew (aka AgentWhite)
@@ -6,11 +7,17 @@ Twitter: @_agentwhite_
 Website: https://thegibson.xyz
 """
 
-version = "0.1.3"
+version = "0.1.4"
 
 import os, sys
 from time import sleep
 import subprocess
+
+# python 3 compat
+try: 
+	input = raw_input
+except NameError: 
+	pass
 
 # Give some color to the texts
 class bcolors:
@@ -20,15 +27,28 @@ class bcolors:
 	BOLD = '\033[1m'
 	ENDC = '\033[0m'
 
+def self_update():
+	# force https for git
+	def git_https_force():
+		subprocess.Popen('git config --global url."https://github.com/".insteadOf git@github.com:;git config --global url."https://".insteadOf git://', shell=True).wait()
+
+	# force https
+	git_https_force()
+
+	# try to update ourself first
+	print("Trying to update myself first.. Then starting...")
+	subprocess.Popen("git pull", shell=True).wait()
+
+
 def banner():
-	banner = '''
+	banner = bcolors.YELLOW + '''
 ooooo ooooo oooooooooo  o88                           
  888   888   888    888 oooo  oo oooooo     oooooooo8 
  888ooo888   888oooo88   888   888   888  888    88o  
  888   888   888         888   888   888   888oo888o  
 o888o o888o o888o       o888o o888o o888o 888     888 
                                            888ooo888                 
-	'''
+	''' + bcolors.ENDC
 	banner += bcolors.BOLD + bcolors.RED + 'Version %s' % str(version)
 	banner += '''
 	HPing
@@ -93,6 +113,11 @@ def main():
 		rest = 0
 		repeat = 0
 		alerts = False
+		
+		if '-h' in sys.argv or '--help' in sys.argv:
+			print("\nJust run the program either python2 or python3\nYou can also run it using ./hping.py\n")
+			sys.exit()
+		
 		print(bcolors.YELLOW + bcolors.BOLD + banner() + bcolors.ENDC)
 		address = input("Enter the IP/host you want to check: ")
 		rest = input("How long do you want to wait until the next check? (default 4) ")
@@ -115,9 +140,13 @@ def main():
 
 		if alerts == 'y':
 			get_alerts = True
-		else:
+		elif alerts == 'n':
 			get_alerts = False
+		else:
+			get_alerts = True
 		
+		os.system("cls || clear")
+		print(banner())
 		repeat = int(repeat)
 		rest = int(rest)
 		
@@ -133,6 +162,12 @@ def main():
 		print("*"*20)
 
 if __name__ == "__main__":
+	if os.geteuid() != 0:
+		print("\nWe autocheck for updates and need sudo permission since you most likely\ndownloaded me using PTF? IDK")
+		print("This needs to be run as root. Please sudo it up! Exiting...")
+		sys.exit()
+	
+	self_update()
 	main()
 else:
 	sys.exit()
