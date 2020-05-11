@@ -8,7 +8,7 @@ Website: https://thegibson.xyz
 """
 
 version = "0.1.4"
-# ignore this
+
 import os, sys
 from time import sleep
 import subprocess
@@ -166,6 +166,7 @@ if __name__ == "__main__":
 		print("This needs to be run as root. Please sudo it up! Exiting...")
 		sys.exit()
 	self_update()
+	sleep(1)
 	main()
 else:
 	sys.exit()
