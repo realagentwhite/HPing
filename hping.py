@@ -37,6 +37,7 @@ def self_update():
 
 	# try to update ourself first
 	print("Trying to update myself first.. Then starting...")
+	sleep(1)
 	subprocess.Popen("git pull", shell=True).wait()
 
 def banner():
