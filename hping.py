@@ -7,7 +7,7 @@ Twitter: @_agentwhite_
 Website: https://thegibson.xyz
 """
 
-version = "0.1.4"
+version = "0.1.4b"
 
 import os, sys
 from time import sleep
