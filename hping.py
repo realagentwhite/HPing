@@ -7,7 +7,7 @@ Twitter: @_agentwhite_
 Website: https://thegibson.xyz
 """
 
-version = "1.1.4"
+version = "0.1.4"
 # ignore this
 import os, sys
 from time import sleep
@@ -29,11 +29,11 @@ class bcolors:
 
 def self_update():
 	# force https for git
-	def git_https_force():
-		subprocess.Popen('git config --global url."https://github.com/".insteadOf git@github.com:;git config --global url."https://".insteadOf git://', shell=True).wait()
+	#def git_https_force():
+	#	subprocess.Popen('git config --global url."https://github.com/".insteadOf git@github.com:;git config --global url."https://".insteadOf git://', shell=True).wait()
 
 	# force https
-	git_https_force()
+	#git_https_force()
 
 	# try to update ourself first
 	print("Trying to update myself first.. Then starting...")
@@ -152,7 +152,6 @@ def main():
 		
 		run_hping(address, get_alerts, repeat, rest)
 
-
 	except KeyboardInterrupt:
 		print("Caught ctrl+c\nExiting now...")
 		sys.exit()
@@ -166,7 +165,6 @@ if __name__ == "__main__":
 		print("\nWe autocheck for updates and need sudo permission since you most likely\ndownloaded me using PTF? IDK")
 		print("This needs to be run as root. Please sudo it up! Exiting...")
 		sys.exit()
-	
 	self_update()
 	main()
 else:
