@@ -7,7 +7,7 @@ Twitter: @_agentwhite_
 Website: https://thegibson.xyz
 """
 
-version = "0.1.4b"
+version = "0.1.5"
 
 import os, sys
 from time import sleep
@@ -38,7 +38,6 @@ def self_update():
 	# try to update ourself first
 	print("Trying to update myself first.. Then starting...")
 	subprocess.Popen("git pull", shell=True).wait()
-
 
 def banner():
 	banner = bcolors.YELLOW + '''
@@ -104,7 +103,6 @@ def run_hping(address, get_alerts, repeat, rest):
 		input("Press enter to continue...")
 		main()
 
-
 def main():
 	try:
 		os.system("clear")
@@ -114,11 +112,12 @@ def main():
 		repeat = 0
 		alerts = False
 		
+		print(banner())
+		
 		if '-h' in sys.argv or '--help' in sys.argv:
 			print("\nJust run the program either python2 or python3\nYou can also run it using ./hping.py\n")
 			sys.exit()
 		
-		print(bcolors.YELLOW + bcolors.BOLD + banner() + bcolors.ENDC)
 		address = input("Enter the IP/host you want to check: ")
 		rest = input("How long do you want to wait until the next check? (default 4) ")
 		if rest < '0' or rest > '60':
@@ -165,8 +164,10 @@ if __name__ == "__main__":
 		print("\nWe autocheck for updates and need sudo permission since you most likely\ndownloaded me using PTF? IDK")
 		print("This needs to be run as root. Please sudo it up! Exiting...")
 		sys.exit()
-	self_update()
-	sleep(1)
-	main()
-else:
-	sys.exit()
+
+	if '--update' in sys.argv:
+		self_update()
+		sleep(1)
+		main()
+	else:
+		main()
