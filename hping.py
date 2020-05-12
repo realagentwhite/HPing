@@ -128,13 +128,13 @@ def main():
 			print("Using default timeout as 4")
 			rest = 4
 		
-		repeat = input("How many times would you like to check? (greater than 4, default is 60) ")
+		repeat = input("How many times would you like to check? (greater than 4, default is 10) ")
 		if repeat < '0':
 			print("Using default to check every 60 seconds")
-			repeat = 60
+			repeat = 10
 		elif len(repeat) == 0:
 			print("Using default to check every 60 seconds")
-			repeat = 60
+			repeat = 10
 			
 		alerts = input("Would you like to get alert if the host/IP is responding to pings? (Y/n) ").lower()
 
