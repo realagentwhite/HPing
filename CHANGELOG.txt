@@ -1,5 +1,12 @@
 ~~~~~~~~~~~~~~~~
-version 0.1.3
+version 0.1.5
+~~~~~~~~~~~~~~~~
+
+* Add https to github repository pulling
+* Add the --update option to update the script when new feature available or any update
+
+~~~~~~~~~~~~~~~~
+version 0.1.4
 ~~~~~~~~~~~~~~~~
 
 * Added the capability of running with python2 and calling directly using ./hping.py
@@ -19,7 +26,7 @@ version 0.1.2
 * Fix some errors in the code
 
 ~~~~~~~~~~~~~~~~
-version 0.1
+version 0.1.1
 ~~~~~~~~~~~~~~~~
 
 * initial release of HPing

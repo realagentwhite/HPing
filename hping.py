@@ -7,7 +7,7 @@ Twitter: @_agentwhite_
 Website: https://thegibson.xyz
 """
 
-version = "0.1.5"
+version = "0.1.6"
 
 import os, sys
 from time import sleep
@@ -29,11 +29,11 @@ class bcolors:
 
 def self_update():
 	# force https for git
-	#def git_https_force():
-	#	subprocess.Popen('git config --global url."https://github.com/".insteadOf git@github.com:;git config --global url."https://".insteadOf git://', shell=True).wait()
+	def git_https_force():
+		subprocess.Popen('git config --global url."https://github.com/".insteadOf git@github.com:;git config --global url."https://".insteadOf git://', shell=True).wait()
 
 	# force https
-	#git_https_force()
+	git_https_force()
 
 	# try to update ourself first
 	print("Trying to update myself first.. Then starting...")
