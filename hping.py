@@ -2,8 +2,8 @@
 
 """
 HPing
-Written by: Andrew (aka AgentWhite)
-Twitter: @_agentwhite_
+Written by: Andrew
+Twitter: @__Th3J0k3r__
 Website: https://thegibson.xyz
 """
 
@@ -14,10 +14,8 @@ from time import sleep
 import subprocess
 
 # python 3 compat
-try: 
-	input = raw_input
-except NameError: 
-	pass
+try: input = raw_input
+except: pass
 
 # Give some color to the texts
 class bcolors:
@@ -52,8 +50,8 @@ o888o o888o o888o       o888o o888o o888o 888     888
 	banner += bcolors.BOLD + bcolors.RED + 'Version %s' % str(version)
 	banner += '''
 	HPing
-	Written by: Andrew (aka AgentWhite)
-	Twitter: @_agentwhite_
+	Written by: Andrew
+	Twitter: @__Th3J0k3r__
 	Website: https://thegibson.xyz\n''' + bcolors.ENDC
 	return banner
 
